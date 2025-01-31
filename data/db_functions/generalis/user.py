@@ -21,4 +21,11 @@ def registration_user(telegram_id, name, surname, username, phone_number):
     db_session.close()
     return user
 
+def get_user_tasks_list(telegram_id):
+    db_session = create_session()
+    user = db_session.query(User).get(telegram_id)
+    if user is None:
+        return None
+    return user.orders
+
 

@@ -20,6 +20,13 @@ class User(SqlAlchemyBase, SerializerMixin):
     rating_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('ratings.id'))
     rating = sqlalchemy.orm.relationship("Rating", back_populates="user", uselist=False, foreign_keys=[rating_id])
 
+    # Обратная связь с таблицей Task (через customer_id)
+    orders = sqlalchemy.orm.relationship("Task", back_populates="customer", foreign_keys="[Task.customer_id]")
+
+    # Обратная связь с таблицей Task (через executor_id)
+    tasks = sqlalchemy.orm.relationship("Task", back_populates="executor", foreign_keys="[Task.executor_id]")
+
+
     def __init__(self, name, **kwargs):
         super().__init__(name=name, **kwargs)
         self.rating = Rating()

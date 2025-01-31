@@ -17,8 +17,11 @@ class Task(SqlAlchemyBase, SerializerMixin):
     is_completed_tack = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
     death_line = sqlalchemy.Column(sqlalchemy.DateTime, nullable=False)
 
-    customer = sqlalchemy.orm.relationship("User", backref="orders", foreign_keys=[customer_id])
-    executor = sqlalchemy.orm.relationship("User", backref="tasks", foreign_keys=[executor_id])
+    customer = sqlalchemy.orm.relationship("User", back_populates="orders", foreign_keys=[customer_id])
+
+    # Связь с таблицей User через executor_id
+    executor = sqlalchemy.orm.relationship("User", back_populates="tasks", foreign_keys=[executor_id])
+
 
     def __repr__(self):
         return f'<Task> {self.id} {self.text[:10]}...'
