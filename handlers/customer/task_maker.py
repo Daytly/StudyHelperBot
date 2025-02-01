@@ -1,4 +1,4 @@
-from telegram import Update
+from telegram import Update, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler, CallbackContext, CommandHandler, MessageHandler, filters, \
     CallbackQueryHandler
 from telegram_bot_calendar import DetailedTelegramCalendar, LSTEP
@@ -45,7 +45,7 @@ async def input_award_task_handler(update: Update, context: CallbackContext):
         death_line = context.user_data[DEATH_LINE_TASK]
         award = context.user_data[AWARD_TASK]
         create_task(text, death_line, award, update.effective_user.id)
-        await update.message.reply_html(final_create_task_message)
+        await update.message.reply_html(final_create_task_message, reply_markup=ReplyKeyboardRemove())
         return ConversationHandler.END
     else:
         await  update.message.reply_html(input_award_task_emission_message)
@@ -71,3 +71,4 @@ task_maker_conv_handler = ConversationHandler(
     },
     fallbacks=[CommandHandler(stop_command, stop_create_task_handler)],
 )
+

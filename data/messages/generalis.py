@@ -11,3 +11,5 @@ registration_emission_message = "Вы уже были зарегистриров
 final_message_registration = "Вы успешно зарегистрировались"
 
 message_about_restricted_access = "Доступ закрыт"
+
+no_task_emission_message = "Нет не одного заказа"

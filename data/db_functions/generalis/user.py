@@ -28,4 +28,12 @@ def get_user_tasks_list(telegram_id):
         return None
     return user.orders
 
+def get_user_task(telegram_id, index):
+    orders = get_user_tasks_list(telegram_id)
+    if orders is None:
+        return None
+
+    if 0 <= index < len(orders):
+        return orders[index]
+    return None
 
