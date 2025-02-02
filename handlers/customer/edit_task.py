@@ -6,7 +6,7 @@ from data.constants.callback_patterns import edit_task_menu_pattern
 from data.constants.callbacks import edit_task_text_callback, edit_task_award_callback, edit_task_death_line_callback, \
     edit_task_delete_callback, edit_task_confirm_callback
 from data.db_functions.generalis.task import update_task_text, update_task_award, update_task_deadline, \
-    delete_task_by_id, get_task_by_id, update_task_conform_customer
+    delete_task_by_id, get_task_by_id, update_task_confirm_customer
 from data.db_functions.generalis.user import get_user_task
 from data.keyboards.client.customer.keyboards import input_award_keyboard
 from data.keyboards.client.customer.maker import create_main_menu_keyboard, create_task_menu_keyboard
@@ -115,7 +115,8 @@ async def confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
     task_id = context.user_data['task_id']
     if message == "ПОДТВЕРДИТЬ":
         await update.message.reply_html(text="Подтверждено")
-        update_task_conform_customer(task_id)
+        update_task_confirm_customer(task_id)
+        await open_edit_task_menu(update, context, task_id)
         return ConversationHandler.END
     await update.message.reply_html("Не верное слово")
     await open_edit_task_menu(update, context, task_id)
@@ -127,7 +128,8 @@ async def open_edit_task_menu(update: Update, context: CallbackContext, task_id)
     if order is None:
         return
     keyboard = create_task_menu_keyboard(order.id, not order.is_completed_customer and order.executor is not None,
-                                         not (order.is_completed_customer or order.is_completed_executor))
+                                         not (order.is_completed_customer or order.is_completed_executor),
+                                         order.is_completed_tack)
     text = create_edit_task_message(order)
 
     try:

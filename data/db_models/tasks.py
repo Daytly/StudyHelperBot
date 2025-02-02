@@ -1,4 +1,5 @@
 import sqlalchemy
+from sqlalchemy import event
 from sqlalchemy.orm import validates
 from sqlalchemy_serializer import SerializerMixin
 from data.db_models.db_session import SqlAlchemyBase
@@ -26,16 +27,11 @@ class Task(SqlAlchemyBase, SerializerMixin):
     def __repr__(self):
         return f'<Task> {self.id} {self.text[:10]}...'
 
-    @validates('is_completed_customer', 'is_completed_executor')
-    def update_dependent_field(self, key, value):
-        if key == 'is_completed_customer':
-            self.is_completed_customer = value
-        elif key == 'is_completed_executor':
-            self.is_completed_executor = value
-
-        self.is_completed_tack = self.calculate_is_completed_tack()
-
-        return value
 
     def calculate_is_completed_tack(self):
         return self.is_completed_customer and self.is_completed_executor
+
+
+@event.listens_for(Task, 'before_update')
+def receive_before_update(mapper, connection, target):
+    target.is_completed_tack = target.calculate_is_completed_tack()

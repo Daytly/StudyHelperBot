@@ -10,6 +10,7 @@ from data.keyboards.client.customer.keyboards import input_award_keyboard
 from data.messages.client.customer import input_award_task_message, \
     input_death_line_task_message, final_create_task_message, input_award_task_emission_message, \
     stop_create_task_message, input_text_task_message
+from handlers.executor.notice import notice_executors
 
 INPUT_TEXT_TASK_STATE, INPUT_DEATH_LINE_TASK_STATE, INPUT_AWARD_TASK_STATE = range(3)
 
@@ -44,7 +45,8 @@ async def input_award_task_handler(update: Update, context: CallbackContext):
         text = context.user_data[TEXT_TASK]
         death_line = context.user_data[DEATH_LINE_TASK]
         award = context.user_data[AWARD_TASK]
-        create_task(text, death_line, award, update.effective_user.id)
+        task_id = create_task(text, death_line, award, update.effective_user.id)
+        await notice_executors(update, context, task_id)
         await update.message.reply_html(final_create_task_message, reply_markup=ReplyKeyboardRemove())
         return ConversationHandler.END
     else:

@@ -9,6 +9,15 @@ def check_is_admin(telegram_id):
         return False
     return user.is_admin
 
+
+def check_is_executor(telegram_id):
+    db_session = create_session()
+    user = db_session.query(User).get(telegram_id)
+    if user is None:
+        return False
+    return user.is_executor
+
+
 def check_is_register(telegram_id):
     db_session = create_session()
     user = db_session.query(User).get(telegram_id)

@@ -1,3 +1,5 @@
+from data.messages.generalis import confirm_message
+
 main_menu_message = "Меню"
 
 input_text_task_message = "Введите максимально подробное описание задачи в **одно** сообщение"
@@ -12,7 +14,7 @@ final_create_task_message = "Отлично ваш заказ на рассмо�
 
 stop_create_task_message = "Создание отменено"
 
-task_message = "Текст: {0}\nНаграда: {1}\nКр.срок:{2}\n"
+task_message = "Текст: {0}\nНаграда: {1}\nКр.срок: {2}\nСтатус: {3}"
 
 edit_task_message = "Текст: {0}\nНаграда: {1}\nКр.срок:{2}\n***Статус***\n{3}"
 
@@ -20,13 +22,13 @@ edit_task_message = "Текст: {0}\nНаграда: {1}\nКр.срок:{2}\n**
 def create_edit_task_message(order):
     if order.is_completed_tack:
         message = edit_task_message.format(order.text, order.award, order.death_line.strftime("%Y-%m-%d"),
-                                           "Завершено ✅")
+                                           confirm_message)
     else:
         if order.executor is not None:
             message = edit_task_message.format(order.text, order.award, order.death_line.strftime("%Y-%m-%d"),
-                                               f"Заказчик: {order.executor.phone_number} {"Подтверждено" if order.is_completed_executor else "В производстве"}\n"
+                                               f"Исполнитель: {order.executor.phone_number} {"Подтверждено" if order.is_completed_executor else "В производстве"}\n"
                                                f"Вы: {"Получено" if order.is_completed_customer else "Не получено"}\n")
         else:
             message = edit_task_message.format(order.text, order.award, order.death_line.strftime("%Y-%m-%d"),
-                                               f"Заказчик: Не определён")
+                                               f"Исполнитель: Не определён")
     return message

@@ -13,3 +13,7 @@ final_message_registration = "Вы успешно зарегистрировал
 message_about_restricted_access = "Доступ закрыт"
 
 no_task_emission_message = "Нет не одного заказа"
+
+
+confirm_message = "Завершено ✅"
+work_message = "В работе 🔄"
