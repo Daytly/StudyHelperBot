@@ -18,6 +18,8 @@ task_message = "Текст: {0}\nНаграда: {1}\nКр.срок: {2}\nСта
 
 edit_task_message = "Текст: {0}\nНаграда: {1}\nКр.срок:{2}\n***Статус***\n{3}"
 
+new_executor_message = "За ваш заказ:\n{0}\nвзялся: {1}"
+
 
 def create_edit_task_message(order):
     if order.is_completed_tack:

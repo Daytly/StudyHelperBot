@@ -8,6 +8,7 @@ from data.db_functions.generalis.task import get_task_by_id, update_task_executo
 from data.decorators import executor_command
 from data.keyboards.client.executor.maker import create_access_task_keyboard, create_cancel_task_keyboard
 from data.messages.client.executor import new_task_message, no_tasks_message
+from handlers.customer.notice import notice_customer
 
 
 async def notice_executors(update: Update, context: CallbackContext, task_id) -> None:
@@ -23,6 +24,7 @@ async def notice_executors(update: Update, context: CallbackContext, task_id) ->
         "Не определён" if task.executor is None else task.executor.phone_number,
     ), reply_markup=create_access_task_keyboard(task_id) if task.executor is None else create_cancel_task_keyboard(
         task_id))
+    await notice_customer(update, context, task.id)
 
 
 async def notice_executors_callback_handler(update: Update, context: CallbackContext, task_id) -> None:
@@ -38,6 +40,8 @@ async def notice_executors_callback_handler(update: Update, context: CallbackCon
         "Не определён" if task.executor is None else task.executor.phone_number,
     ), reply_markup=create_access_task_keyboard(task_id) if task.executor is None else create_cancel_task_keyboard(
         task_id))
+    await notice_customer(update, context, task.id)
+
 
 
 @executor_command
